@@ -1,7 +1,10 @@
 import callAxios from "../../utils/callAxios";
 import setAuthToken from "../../utils/setAuthToken";
-import { ADMIN_DETAILS_LOADED, AUTH_ERROR, ADMIN_LOGIN_SUCCESS, ADMIN_LOGIN_FAILURE, ADMIN_AUTH_LOADING, ADMIN_DETAILS_LOADING, REDIRECT_TO_LOGIN, LOGOUT_ADMIN } from "../types/types";
+import { ADMIN_LOGIN_SUCCESS, ADMIN_LOGIN_FAILURE, ADMIN_AUTH_LOADING, LOGOUT_ADMIN } from "../types/types";
 
+
+
+/*
 export const loadAdminDetails = function () {
   return async function (dispatch) {
     if (localStorage.getItem("musoAdminAuthToken")) {
@@ -36,7 +39,7 @@ export const loadAdminDetails = function () {
     }
   };
 };
-
+*/
 
 export const loginAdmin = function(adminDetails){
     
@@ -51,6 +54,7 @@ export const loginAdmin = function(adminDetails){
                 type: ADMIN_LOGIN_SUCCESS,
                 payload: response.data.token,
                 alert: {
+                    type: "success",
                     message: "Log in successful!"
                 }
             })
@@ -61,6 +65,7 @@ export const loginAdmin = function(adminDetails){
                 type: ADMIN_LOGIN_FAILURE,
                 payload: err.response.status,
                 alert:{
+                    type: "error",
                     message: err.message
                 }
             })

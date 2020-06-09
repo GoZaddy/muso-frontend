@@ -15,6 +15,7 @@ export const createPlaylist = function(playlist){
             dispatch({
                 type: CREATE_PLAYLIST_SUCCESS,
                 alert: {
+                    type: "success",
                     message: "Playlist created successfully!"
                 }
             })
@@ -24,6 +25,7 @@ export const createPlaylist = function(playlist){
                 type: CREATE_PLAYLIST_FAILURE,
                 payload: err.response.status,
                 alert: {
+                    type: "error",
                     message: "Could not create playlist"
                 }
             })
@@ -48,6 +50,7 @@ export const addMusicToPlaylist = function(music){
             dispatch({
                 type: ADD_MUSIC_SUCCESS,
                 alert:{
+                    type: "success",
                     message: "Song added successfully!"
                 }
             })
@@ -57,6 +60,7 @@ export const addMusicToPlaylist = function(music){
                 type: ADD_MUSIC_FAILURE,
                 payload: err.response.status,
                 alert: {
+                    type: "error",
                     message: "Could not add song"
                 }
             })
@@ -83,7 +87,10 @@ export const getAllUsers = function(){
         catch(err){
             dispatch({
                 type: GET_USERS_FAILURE,
-                alert: err.message
+                alert: {
+                    type:"error",
+                    message: "err.message"
+                }
             })
         }
         

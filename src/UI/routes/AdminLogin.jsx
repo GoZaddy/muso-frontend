@@ -8,16 +8,29 @@ import { makeStyles } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { loginAdmin } from "../../redux/actions/authAction";
 import { connect } from "react-redux";
+import Alert from "@material-ui/lab/Alert"
+import AlertTitle from "@material-ui/lab/AlertTitle"
 import { useEffect } from "react";
+import Grow from '@material-ui/core/Grow';
 
-function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails }) {
-  useEffect(() => {}, [isLoginLoading]);
+function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, alert }) {
+  useEffect(() => {
+    if(alert){
+      showAlert(alert)
+      setIsAlertOpen(true)
+      setTimeout(
+        () => {
+          setIsAlertOpen(false)
+        }, 2000
+      )
+    }
+  }, [alert]);
   const useStyles = makeStyles({
     heading: {
       fontSize: "2rem",
     },
     container: {
-      marginTop: useMediaQuery("(min-width: 700px)") ? "2rem" : "4rem",
+      marginTop: useMediaQuery("(min-width: 700px)") ? "2rem" : "5rem",
     },
     form: {
       maxWidth: useMediaQuery("(min-width: 700px)") && "500px",
@@ -38,6 +51,16 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails }) {
       right: "50%",
       top: "50%",
     },
+    alert: {
+      width: "80%",
+      maxWidth: "400px",
+      position: "absolute",
+      bottom: "4rem",
+      marginLeft: "1rem"
+    },
+    alertTitle: {
+      textTransform: "capitalize"
+    }
   });
 
   const classes = useStyles();
@@ -47,6 +70,13 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails }) {
     password: "",
   });
 
+  const [currentAlert, showAlert] = useState({
+    type: "",
+    message:""
+  })
+
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+
   function handleChange(e) {
     setCredentials({
       ...credentials,
@@ -55,6 +85,7 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails }) {
   }
 
   return (
+    <>
     <Container maxWidth="sm" className={classes.container}>
       <Typography align="center" variant="h1" className={classes.heading}>
         Log In
@@ -104,13 +135,20 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails }) {
         </div>
       </form>
     </Container>
+    <Grow in = {isAlertOpen}>
+    <Alert severity={currentAlert.type} className = {classes.alert}>
+          <AlertTitle className = {classes.alertTitle}>{currentAlert.type}</AlertTitle>
+            {currentAlert.message}
+    </Alert>
+    </Grow>
+    </>
   );
 }
 
 const mapStateToProps = (state) => ({
   isLoginLoading: state.auth.loginLoading,
   isAdminAuthenticated: state.auth.isAdminAuthenticated,
-  adminDetails: state.auth.adminDetails,
+  alert: state.auth.alert
 });
 
 const mapDispatchToProps = {

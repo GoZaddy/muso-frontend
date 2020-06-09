@@ -19,6 +19,7 @@ export const loadCurrentPlaylist = function(){
                 type: PLAYLIST_LOAD_ERROR,
                 payload: err.response.status,
                 alert: {
+                    type: "error",
                     message: err.message
                 }
             })

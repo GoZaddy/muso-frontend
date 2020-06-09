@@ -1,7 +1,5 @@
 import {
   LOGOUT_ADMIN,
-  ADMIN_DETAILS_LOADING,
-  ADMIN_DETAILS_LOADED,
   REDIRECT_TO_LOGIN,
   ADMIN_LOGIN_FAILURE,
   AUTH_ERROR,
@@ -50,8 +48,10 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAdminAuthenticated: false,
+        
         adminDetails: null,
         alert: {
+          type: "error",
           message:
             "Admin details could not be retrieved! You will be logged out soon",
         },
@@ -60,9 +60,10 @@ export default (state = initialState, action) => {
         localStorage.removeItem("musoAdminAuthToken");
         return {
             ...state,
+            loginLoading: false,
             alert: action.alert
         }
-    case ADMIN_DETAILS_LOADING:
+    /*case ADMIN_DETAILS_LOADING:
       return {
         ...state,
         adminDetailsLoading: true,
@@ -72,7 +73,7 @@ export default (state = initialState, action) => {
         ...state,
         adminDetailsLoading: false,
         adminDetails: action.payload,
-      };
+      };*/
 
     case REDIRECT_TO_LOGIN:
       return {
