@@ -5,7 +5,8 @@ import {
   AUTH_ERROR,
   CLEAR_REDIRECT_TO_LOGIN,
   ADMIN_LOGIN_SUCCESS,
-  ADMIN_AUTH_LOADING
+  ADMIN_AUTH_LOADING,
+  CLEAR_ALERT
 } from "../types/types";
 
 const initialState = {
@@ -63,6 +64,11 @@ export default (state = initialState, action) => {
             loginLoading: false,
             alert: action.alert
         }
+    case CLEAR_ALERT:
+      return {
+        ...state,
+        alert: null
+      }
     /*case ADMIN_DETAILS_LOADING:
       return {
         ...state,

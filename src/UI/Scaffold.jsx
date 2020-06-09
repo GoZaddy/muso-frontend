@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 import { makeStyles, ListItemText } from "@material-ui/core";
 import { useState } from "react";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import {useHistory} from "react-router-dom"
+import {useHistory, useRouteMatch} from "react-router-dom"
 
 let DrawerContext;
 const useStyles = makeStyles({
@@ -25,6 +25,8 @@ const useStyles = makeStyles({
 function Scaffold({ children }) {
   const classes = useStyles();
   const history = useHistory();
+  const {url} = useRouteMatch();
+  console.log(url)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   DrawerContext = React.createContext(setIsDrawerOpen);
   return (
@@ -58,7 +60,7 @@ function Scaffold({ children }) {
           <Button variant="contained" color="primary"  disableElevation = {true} className = {classes.subButton}>
             Subscribe to Muso
           </Button>
-          <Button color="secondary" onClick = {() => {history.push("/login")}}>Log in as Admin</Button>
+          <Button color="secondary" onClick = {() => {history.push(`/login`)}}>Log in as Admin</Button>
         </Box>
       </nav>}
       <DrawerContext.Provider value={setIsDrawerOpen}>

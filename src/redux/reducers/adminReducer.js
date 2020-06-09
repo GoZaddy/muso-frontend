@@ -8,6 +8,7 @@ import {
   CREATE_PLAYLIST_SUCCESS,
   ADD_MUSIC_LOADING,
   CREATE_PLAYLIST_LOADING,
+  CLEAR_ALERT
 } from "../types/types";
 
 const initialState = {
@@ -32,6 +33,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         usersLoading: true,
+      };
+
+    case CLEAR_ALERT:
+      return {
+        ...state,
+        alert: null,
       };
 
     case GET_USERS_SUCCESS:

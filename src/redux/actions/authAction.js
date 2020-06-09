@@ -1,6 +1,6 @@
 import callAxios from "../../utils/callAxios";
 import setAuthToken from "../../utils/setAuthToken";
-import { ADMIN_LOGIN_SUCCESS, ADMIN_LOGIN_FAILURE, ADMIN_AUTH_LOADING, LOGOUT_ADMIN } from "../types/types";
+import { ADMIN_LOGIN_SUCCESS, ADMIN_LOGIN_FAILURE, ADMIN_AUTH_LOADING, LOGOUT_ADMIN, CLEAR_ALERT } from "../types/types";
 
 
 
@@ -66,11 +66,17 @@ export const loginAdmin = function(adminDetails){
                 payload: err.response.status,
                 alert:{
                     type: "error",
-                    message: err.message
+                    message: err.response.data
                 }
             })
         }
         
+    }
+}
+
+export const clearAlertAuth  =  function(){
+    return {
+        type: CLEAR_ALERT
     }
 }
 

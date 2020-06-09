@@ -1,9 +1,9 @@
 import callAxios from "../../utils/callAxios";
 import setAuthToken from "../../utils/setAuthToken";
-import { CREATE_PLAYLIST_FAILURE, CREATE_PLAYLIST_LOADING, CREATE_PLAYLIST_SUCCESS, ADD_MUSIC_LOADING, ADD_MUSIC_SUCCESS, ADD_MUSIC_FAILURE, GET_USERS_LOADING, GET_USERS_SUCCESS, GET_USERS_FAILURE} from "../types/types";
+import { CREATE_PLAYLIST_FAILURE, CREATE_PLAYLIST_LOADING, CREATE_PLAYLIST_SUCCESS, ADD_MUSIC_LOADING, ADD_MUSIC_SUCCESS, ADD_MUSIC_FAILURE, GET_USERS_LOADING, GET_USERS_SUCCESS, GET_USERS_FAILURE, CLEAR_ALERT} from "../types/types";
 
 export const createPlaylist = function(playlist){
-    return function(dispatch){
+    return async function(dispatch){
         dispatch({
             type: CREATE_PLAYLIST_LOADING
         })
@@ -11,7 +11,7 @@ export const createPlaylist = function(playlist){
             setAuthToken(localStorage.getItem("musoAdminAuthToken"));
           }
         try{
-            const response = callAxios("POST", "/playlists", playlist)
+            const response = await callAxios("POST", "/playlists", playlist)
             dispatch({
                 type: CREATE_PLAYLIST_SUCCESS,
                 alert: {
@@ -36,7 +36,7 @@ export const createPlaylist = function(playlist){
 }
 
 export const addMusicToPlaylist = function(music){
-    return function(dispatch){
+    return async function(dispatch){
         dispatch({
             type: ADD_MUSIC_LOADING
         })
@@ -69,7 +69,7 @@ export const addMusicToPlaylist = function(music){
 }
 
 export const getAllUsers = function(){
-    return function(dispatch){
+    return async function(dispatch){
         dispatch({
             type: GET_USERS_LOADING
         })
@@ -96,6 +96,13 @@ export const getAllUsers = function(){
         
     }
 }
+
+export const clearAlertAdmin  =  function(){
+    return {
+        type: CLEAR_ALERT
+    }
+}
+
 
 //View all users
 //Delete user

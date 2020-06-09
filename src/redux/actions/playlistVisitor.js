@@ -39,3 +39,9 @@ export const closeSubscribeModal = function(){
         type: SUBSCRIBE_MODAL_CLOSE
     }
 }
+
+export const clearAlertVisitor  =  function(){
+    return {
+        type: CLEAR_ALERT
+    }
+}

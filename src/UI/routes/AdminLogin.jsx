@@ -6,23 +6,43 @@ import Button from "@material-ui/core/Button";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { makeStyles } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { loginAdmin } from "../../redux/actions/authAction";
+import { loginAdmin, clearAlertAuth } from "../../redux/actions/authAction";
 import { connect } from "react-redux";
 import Alert from "@material-ui/lab/Alert"
 import AlertTitle from "@material-ui/lab/AlertTitle"
 import { useEffect } from "react";
 import Grow from '@material-ui/core/Grow';
+import { useHistory } from "react-router-dom";
 
-function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, alert }) {
+function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, alert, clearAlert }) {
+  const history = useHistory()
+
   useEffect(() => {
-    if(alert){
+    if(isAdminAuthenticated){
+      history.push("/dashboard")
+    }
+  }, [isAdminAuthenticated])
+  useEffect(() => {
+    console.log("heyy")
+    if(alert && alert.type !== ""){
+      console.log(alert);
       showAlert(alert)
       setIsAlertOpen(true)
       setTimeout(
         () => {
+          clearAlert()
           setIsAlertOpen(false)
         }, 2000
       )
+
+
+    }
+    return () => {
+      showAlert({
+        type: "",
+        message: ""
+      })
+      
     }
   }, [alert]);
   const useStyles = makeStyles({
@@ -84,6 +104,8 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, aler
     });
   }
 
+  
+
   return (
     <>
     <Container maxWidth="sm" className={classes.container}>
@@ -135,7 +157,7 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, aler
         </div>
       </form>
     </Container>
-    <Grow in = {isAlertOpen}>
+  <Grow timeout = {100} in = {isAlertOpen}>
     <Alert severity={currentAlert.type} className = {classes.alert}>
           <AlertTitle className = {classes.alertTitle}>{currentAlert.type}</AlertTitle>
             {currentAlert.message}
@@ -153,6 +175,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   login: loginAdmin,
+  clearAlert: clearAlertAuth
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
