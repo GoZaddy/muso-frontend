@@ -23,10 +23,16 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_USERS_FAILURE:
+      return {
+        ...state,
+        usersLoading: false,
+        alert: action.alert,
+      };
     case CREATE_PLAYLIST_FAILURE:
     case ADD_MUSIC_FAILURE:
       return {
         ...state,
+        
         alert: action.alert,
       };
     case GET_USERS_LOADING:
@@ -45,6 +51,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         users: action.payload,
+        usersLoading: false,
         usersLoaded: true,
       };
 

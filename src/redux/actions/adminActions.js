@@ -79,12 +79,14 @@ export const getAllUsers = function(){
 
         try{
             const response = await callAxios("GET","/users")
+            console.log(response)
             dispatch({
                 type: GET_USERS_SUCCESS,
                 payload: response.data
             })
         }
         catch(err){
+            console.log(err.response)
             dispatch({
                 type: GET_USERS_FAILURE,
                 alert: {

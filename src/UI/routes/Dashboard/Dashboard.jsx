@@ -6,10 +6,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import Hidden from "@material-ui/core/Hidden";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import List from "@material-ui/core/List";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -17,23 +16,54 @@ import { v4 as uuidv4 } from "uuid";
 import AlbumIcon from "@material-ui/icons/Album";
 import PersonIcon from "@material-ui/icons/Person";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import Users from "./Users";
+import Playlists from "./Playlists";
 
-import {
-  clearAlertAdmin,
-  createPlaylist,
-  addMusicToPlaylist,
-  getAllUsers,
-} from "./../../../redux/actions/adminActions";
+
 
 import { logoutAdmin } from "./../../../redux/actions/authAction";
 import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Route, useRouteMatch, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
-
+import {Switch} from "react-router-dom";
+import DashboardItem from "./../../DashboardItem";
 const drawerWidth = 240;
+const useStyles = makeStyles((theme) => ({
+  appBar: {
+    width: "100vw",
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  root: {
+    display: "flex",
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+    height: "100vh",
+    zIndex: 0,
+  },
+  drawerContainer: {
+    overflow: "auto",
+  },
+  logOut: {
+    marginLeft: "auto",
+  },
+  
+  main: {
+      width: "calc(100% - 240px)",
+      [theme.breakpoints.down('sm')]: {
+        width: "100%"
+      } // or 100% for smaller screens
+  },
+  
+}));
 
-const Dashboard = ({ isAdminAuthenticated, logOut }) => {
+const Dashboard = ({ isAdminAuthenticated, logOut}) => {
   const history = useHistory();
+  
   useEffect(() => {
     if (!isAdminAuthenticated) {
       //show alert
@@ -41,39 +71,16 @@ const Dashboard = ({ isAdminAuthenticated, logOut }) => {
       history.push("/login");
     }
   }, [isAdminAuthenticated]);
-  const useStyles = makeStyles((theme) => ({
-    appBar: {
-      width: "100vw",
-      zIndex: theme.zIndex.drawer + 1,
-    },
-    root: {
-      display: "flex",
-    },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-    drawerPaper: {
-      width: drawerWidth,
-      height: "100vh",
-      zIndex: 0,
-    },
-    drawerContainer: {
-      overflow: "auto",
-    },
-    logOut: {
-      marginLeft: "auto",
-    },
-    selectedNavItem: {
-      color: theme.palette.primary,
-    },
-  }));
+  
   const classes = useStyles();
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const location = useLocation();
+  const {url} = useRouteMatch();
+
+  console.log(location);
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <AppBar position="fixed" className={classes.AppBar}>
         <Toolbar>
           <Hidden mdUp implementation="css">
@@ -115,22 +122,12 @@ const Dashboard = ({ isAdminAuthenticated, logOut }) => {
             <Toolbar />
             <div className={classes.drawerContainer}>
               <List>
-                <ListItem button key={uuidv4()}>
-                  <ListItemIcon>
-                    <AlbumIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Playlists"} />
-                </ListItem>
-                <ListItem
-                  button
-                  key={uuidv4()}
-                  classes={classes.selectedNavItem}
-                >
-                  <ListItemIcon>
-                    <PersonIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Users"} />
-                </ListItem>
+                <DashboardItem key = {uuidv4()} onClick = {() => {history.push("/dashboard")}} itemLocation = "/dashboard" text = "Playlists">
+                  <AlbumIcon color = {location.pathname == "/dashboard" ?"primary" : ""} />
+                </DashboardItem>
+                <DashboardItem key = {uuidv4()} onClick = {() => {history.push(url+"/users")}} itemLocation = "/dashboard/users" text = "Users">
+                  <PersonIcon color = {location.pathname == "/dashboard/users" ?"primary" : ""} />
+                </DashboardItem>
               </List>
             </div>
           </Drawer>
@@ -142,27 +139,26 @@ const Dashboard = ({ isAdminAuthenticated, logOut }) => {
             <Toolbar />
             <div className={classes.drawerContainer}>
               <List>
-                <ListItem button key={uuidv4()}>
-                  <ListItemIcon>
-                    <AlbumIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Playlists"} />
-                </ListItem>
-                <ListItem
-                  button
-                  key={uuidv4()}
-                  classes={classes.selectedNavItem}
-                >
-                  <ListItemIcon>
-                    <PersonIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Users"} />
-                </ListItem>
+              <DashboardItem key = {uuidv4()} onClick = {() => {history.push("/dashboard")}} itemLocation = "/dashboard" text = "Playlists">
+                  <AlbumIcon color = {location.pathname == "/dashboard" ?"primary" : ""} />
+                </DashboardItem>
+                <DashboardItem key = {uuidv4()} onClick = {() => {history.push(url+"/users")}} itemLocation = "/dashboard/users" text = "Users">
+                  <PersonIcon color = {location.pathname == "/dashboard/users" ?"primary" : ""} />
+                </DashboardItem>
               </List>
             </div>
           </SwipeableDrawer>
         </Hidden>
       </aside>
+      <main className = {classes.main}>
+          <Switch>
+              
+              <Route path = {`/dashboard/users`} component = {Users} />
+              <Route  path = {`/`} component = {Playlists} />
+                
+                
+          </Switch>
+      </main>
     </div>
   );
 };
