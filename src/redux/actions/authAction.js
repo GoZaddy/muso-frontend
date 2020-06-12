@@ -1,6 +1,6 @@
 import callAxios from "../../utils/callAxios";
-import setAuthToken from "../../utils/setAuthToken";
 import { ADMIN_LOGIN_SUCCESS, ADMIN_LOGIN_FAILURE, ADMIN_AUTH_LOADING, LOGOUT_ADMIN, CLEAR_ALERT } from "../types/types";
+import setAuthToken from "../../utils/setAuthToken";
 
 
 

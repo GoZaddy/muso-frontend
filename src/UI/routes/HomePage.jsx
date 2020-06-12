@@ -1,5 +1,5 @@
 import React from "react"
-import Scaffold, { DrawerContext } from "../Scaffold"
+import Scaffold, { DrawerContext } from "../components/Scaffold"
 import { useContext } from "react"
 
 const HomePage = () => {

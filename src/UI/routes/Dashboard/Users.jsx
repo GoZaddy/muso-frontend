@@ -40,7 +40,7 @@ function Users({ getUsers, clearAlert, users, usersLoading, usersLoaded }) {
     }
   }));
   const classes = useStyles();
-  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     getUsers();
   }, []);

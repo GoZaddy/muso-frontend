@@ -1,22 +1,21 @@
 import callAxios from "../../utils/callAxios";
-import setAuthToken from "../../utils/setAuthToken";
-import { PLAYLISTS_LOADED, PLAYLIST_LOADING, PLAYLIST_LOAD_ERROR, SUBSCRIBE_MODAL_CLOSE, SUBSCRIBE_MODAL_OPENED } from "../types/types";
+import {  SUBSCRIBE_MODAL_CLOSED, SUBSCRIBE_MODAL_OPENED, CURRENT_PLAYLIST_LOADING, CURRENT_PLAYLIST_LOAD_ERROR, CURRENT_PLAYLIST_LOADED, CLEAR_ALERT } from "../types/types";
 
 export const loadCurrentPlaylist = function(){
-    return function(dispatch){
+    return async function(dispatch){
         dispatch({
-            type: PLAYLIST_LOADING
+            type: CURRENT_PLAYLIST_LOADING
         })
         try{
             const response = await callAxios("GET", "/playlist")
             dispatch({
-                type: PLAYLISTS_LOADED,
+                type: CURRENT_PLAYLIST_LOADED,
                 payload: response.data
             })
         }
         catch(err){
             dispatch({
-                type: PLAYLIST_LOAD_ERROR,
+                type: CURRENT_PLAYLIST_LOAD_ERROR,
                 payload: err.response.status,
                 alert: {
                     type: "error",
@@ -36,7 +35,7 @@ export const openSubscribeModal = function(){
 
 export const closeSubscribeModal = function(){
     return {
-        type: SUBSCRIBE_MODAL_CLOSE
+        type: SUBSCRIBE_MODAL_CLOSED
     }
 }
 

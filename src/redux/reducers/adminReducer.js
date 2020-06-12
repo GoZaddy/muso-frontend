@@ -8,13 +8,19 @@ import {
   CREATE_PLAYLIST_SUCCESS,
   ADD_MUSIC_LOADING,
   CREATE_PLAYLIST_LOADING,
-  CLEAR_ALERT
+  CLEAR_ALERT,
+  PLAYLISTS_LOAD_ERROR,
+  PLAYLISTS_LOADED,
+  PLAYLISTS_LOADING,
 } from "../types/types";
 
 const initialState = {
   usersLoading: false,
   usersLoaded: false,
   users: null,
+  playlists: null,
+  playlistsLoading: false,
+  playlistsLoaded: false,
   alert: null,
   addMusicLoading: true,
   createPlaylistLoading: true,
@@ -32,7 +38,7 @@ export default (state = initialState, action) => {
     case ADD_MUSIC_FAILURE:
       return {
         ...state,
-        
+
         alert: action.alert,
       };
     case GET_USERS_LOADING:
@@ -71,6 +77,29 @@ export default (state = initialState, action) => {
         ...state,
         createPlaylistLoading: true,
       };
+    case PLAYLISTS_LOADING:
+      return {
+        ...state,
+        playlists: null,
+        playlistsLoading: true,
+        playlistsLoaded: false,
+      };
+    case PLAYLISTS_LOADED:
+      return {
+        ...state,
+        playlists: action.payload,
+        playlistsLoaded: true,
+        playlistsLoading: false,
+      };
+    case PLAYLISTS_LOAD_ERROR:
+      return {
+        ...state,
+        playlists: null,
+        playlistsLoaded: false,
+        playlistsLoading: false,
+        alert: action.alert,
+      };
+
     default:
       return state;
   }

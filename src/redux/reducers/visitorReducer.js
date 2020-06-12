@@ -1,26 +1,27 @@
 import {
-  PLAYLIST_LOADING,
-  PLAYLISTS_LOADED,
+ 
   SUBSCRIBE_MODAL_CLOSED,
   SUBSCRIBE_MODAL_OPENED,
   CLEAR_ALERT,
-  PLAYLIST_LOAD_ERROR
+  CURRENT_PLAYLIST_LOADING,
+  CURRENT_PLAYLIST_LOADED,
+  CURRENT_PLAYLIST_LOAD_ERROR,
 } from "../types/types";
 
 const initialState = {
-  isPlayistsLoading: false,
-  isPlaylistsLoaded: false,
-  playlists: null,
+  isPlayistLoading: false,
+  isPlaylistLoaded: false,
+  currentPlaylist: null,
   alert: null,
   isSubscribeButtonClicked: false,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case PLAYLIST_LOADING:
+    case CURRENT_PLAYLIST_LOADING:
       return {
         ...state,
-        isPlayistsLoading: true,
+        isPlayistLoading: true,
       };
 
       case CLEAR_ALERT:
@@ -28,11 +29,11 @@ export default (state = initialState, action) => {
           ...state,
           alert: null
         }
-    case PLAYLISTS_LOADED:
+    case CURRENT_PLAYLIST_LOADED:
       return {
         ...state,
-        playlists: action.payload,
-        isPlaylistsLoaded: true,
+        playlist: action.payload,
+        isPlaylistLoaded: true,
       };
     case SUBSCRIBE_MODAL_OPENED:
       return {
@@ -44,10 +45,12 @@ export default (state = initialState, action) => {
         ...state,
         isSubscribeButtonClicked: false,
       };
-    case PLAYLIST_LOAD_ERROR:
+    case CURRENT_PLAYLIST_LOAD_ERROR:
       return {
         ...state,
-        playlists: null,
+        playlist: null,
+        isPlayistLoading: false,
+        isPlaylistLoaded: false,
         alert: action.alert
       }
     default:

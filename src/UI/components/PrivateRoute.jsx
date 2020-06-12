@@ -22,8 +22,8 @@ const PrivateRoute = ({ children, isAdminAuthenticated, ...rest }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  isAdminAuthenticated: state.auth.isAdminAuthenticated;
-};
+const mapStateToProps = (state) => ({
+  isAdminAuthenticated: state.auth.isAdminAuthenticated,
+});
 
 export default connect(mapStateToProps, null)(PrivateRoute);

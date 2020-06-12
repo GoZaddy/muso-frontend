@@ -7,11 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import ListItem from "@material-ui/core/ListItem";
 import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import { v4 as uuidv4 } from "uuid";
 import AlbumIcon from "@material-ui/icons/Album";
 import PersonIcon from "@material-ui/icons/Person";
@@ -22,11 +19,10 @@ import Playlists from "./Playlists";
 
 
 import { logoutAdmin } from "./../../../redux/actions/authAction";
-import { useEffect } from "react";
 import { useHistory, Route, useRouteMatch, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import {Switch} from "react-router-dom";
-import DashboardItem from "./../../DashboardItem";
+import DashboardItem from "./../../components/DashboardItem";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -53,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   
   main: {
-      width: "calc(100% - 240px)",
+      width: "calc(100% - 245px)",
       [theme.breakpoints.down('sm')]: {
         width: "100%"
       } // or 100% for smaller screens
@@ -64,21 +60,13 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = ({ isAdminAuthenticated, logOut}) => {
   const history = useHistory();
   
-  useEffect(() => {
-    if (!isAdminAuthenticated) {
-      //show alert
-
-      history.push("/login");
-    }
-  }, [isAdminAuthenticated]);
-  
   const classes = useStyles();
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   const location = useLocation();
   const {url} = useRouteMatch();
 
-  console.log(location);
+  
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.AppBar}>

@@ -9,17 +9,34 @@ import {
 import HomePage from "./UI/routes/HomePage";
 import Login from "./UI/routes/AdminLogin";
 import Dashboard from "./UI/routes/Dashboard/Dashboard";
-import Scaffold from "./UI/Scaffold";
+import Scaffold from "./UI/components/Scaffold";
 import store from "./redux/store";
 import { Provider } from "react-redux";
+import PrivateRoute from "./UI/components/PrivateRoute";
+import callAxios from "./utils/callAxios";
+
+
+async function getData(){
+	const response = await callAxios({
+   method: "GET",
+   url: "/users"
+  });
+//const data = response.data
+console.log("TESTING!!!")
+console.log(response)
+}
+
+
+getData();
+
 
 function App() {
   return (
     <Provider store={store}>
       <Switch>
-        <Route path="/dashboard">
+        <PrivateRoute path="/dashboard">
           <Dashboard />
-        </Route>
+        </PrivateRoute>
         <Route path="/login">
           <Scaffold>
             <Login />
