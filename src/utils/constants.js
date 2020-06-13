@@ -1,8 +1,17 @@
-export const baseURL = "http://localhost:8080/api"
-export const token = localStorage.getItem("musoAdminAuthToken");
+//YoutubeMusic constant string
+export const YOUTUBE_MUSIC = "YOUTUBE_MUSIC"
 
-export const axiosTokenConfig = {
-    headers: {
-      'authorization': token,
-    }
-}
+//Spotify constant string
+export const SPOTIFY = "SPOTIFY"
+
+//AudioMack constant string
+export const AUDIOMACK = "AUDIOMACK"
+
+//AppleMusic constant string
+export const APPLE_MUSIC = "APPLE_MUSIC"
+
+//Deezer constant string
+export const DEEZER = "DEEZER"
+
+//AmazonMusic constant string
+export const AMAZON_MUSIC = "AMAZON_MUSIC"

@@ -1,39 +1,75 @@
 import {
- 
   SUBSCRIBE_MODAL_CLOSED,
   SUBSCRIBE_MODAL_OPENED,
   CLEAR_ALERT,
-  CURRENT_PLAYLIST_LOADING,
-  CURRENT_PLAYLIST_LOADED,
-  CURRENT_PLAYLIST_LOAD_ERROR,
+  RECENT_PLAYLISTS_LOADING,
+  RECENT_PLAYLISTS_LOADED,
+  RECENT_PLAYLISTS_LOAD_ERROR,
+  OLDER_PLAYLISTS_LOADING,
+  OLDER_PLAYLISTS_LOAD_ERROR,
+  OLDER_PLAYLISTS_LOADED,
 } from "../types/types";
 
 const initialState = {
-  isPlayistLoading: false,
-  isPlaylistLoaded: false,
-  currentPlaylist: null,
+  olderPlaylistsLoading: false,
+  olderPlaylistsLoaded: false,
+  recentPlaylistsLoading: false,
+  recentPlaylistsLoaded: false,
+  olderPlaylists: null,
+  recentPlaylists: null,
   alert: null,
   isSubscribeButtonClicked: false,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case CURRENT_PLAYLIST_LOADING:
+    case CLEAR_ALERT:
       return {
         ...state,
-        isPlayistLoading: true,
+        alert: null,
+      };
+    case RECENT_PLAYLISTS_LOADING:
+      return {
+        ...state,
+        recentPlaylistsLoading: true,
+        recentPlaylistsLoaded: false,
+      };
+    case RECENT_PLAYLISTS_LOADED:
+      return {
+        ...state,
+        recentPlaylists: action.payload,
+        recentPlaylistsLoading: false,
+        recentPlaylistsLoaded: true,
+      };
+    case RECENT_PLAYLISTS_LOAD_ERROR:
+      return {
+        ...state,
+        recentPlaylists: null,
+        recentPlaylistsLoading: false,
+        recentPlaylistsLoaded: false,
+        alert: action.alert,
       };
 
-      case CLEAR_ALERT:
-        return {
-          ...state,
-          alert: null
-        }
-    case CURRENT_PLAYLIST_LOADED:
+    case OLDER_PLAYLISTS_LOADING:
       return {
         ...state,
-        playlist: action.payload,
-        isPlaylistLoaded: true,
+        olderPlaylistsLoading: true,
+        olderPlaylistsLoaded: false,
+      };
+    case OLDER_PLAYLISTS_LOADED:
+      return {
+        ...state,
+        olderPlaylists: action.payload,
+        olderPlaylistsLoading: false,
+        olderPlaylistsLoaded: true,
+      };
+    case OLDER_PLAYLISTS_LOAD_ERROR:
+      return {
+        ...state,
+        olderPlaylists: null,
+        olderPlaylistsLoading: false,
+        olderPlaylistsLoaded: false,
+        alert: action.alert,
       };
     case SUBSCRIBE_MODAL_OPENED:
       return {
@@ -45,14 +81,7 @@ export default (state = initialState, action) => {
         ...state,
         isSubscribeButtonClicked: false,
       };
-    case CURRENT_PLAYLIST_LOAD_ERROR:
-      return {
-        ...state,
-        playlist: null,
-        isPlayistLoading: false,
-        isPlaylistLoaded: false,
-        alert: action.alert
-      }
+
     default:
       return state;
   }

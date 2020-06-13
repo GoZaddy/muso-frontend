@@ -16,8 +16,7 @@ import {
   PLAYLISTS_LOADED,
   PLAYLISTS_LOAD_ERROR
 } from "../types/types";
-import axios from "axios";
-import { baseURL, token, axiosTokenConfig } from "../../utils/constants";
+
 
 export const createPlaylist = function (playlist) {
   return async function (dispatch) {
@@ -49,7 +48,7 @@ export const createPlaylist = function (playlist) {
   };
 };
 
-export const addMusicToPlaylist = function (music) {
+export const addMusicToPlaylist = function (id, music) {
   return async function (dispatch) {
     dispatch({
       type: ADD_MUSIC_LOADING,
@@ -60,7 +59,7 @@ export const addMusicToPlaylist = function (music) {
     }
 
     try {
-      const response = await callAxios("POST", "/playlist/music", music);
+      await callAxios("POST", `/playlists/${id}/songs`, music);
       dispatch({
         type: ADD_MUSIC_SUCCESS,
         alert: {

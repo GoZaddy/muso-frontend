@@ -5,7 +5,6 @@ import {
   addMusicToPlaylist,
   getAllPlaylists,
 } from "./../../../redux/actions/adminActions";
-import { loadCurrentPlaylist } from "./../../../redux/actions/playlistVisitor";
 import { Container, makeStyles } from "@material-ui/core";
 import { useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -27,7 +26,7 @@ const useStyles = makeStyles({
   justifyEnd: {
     display: "flex",
     justifyContent: "flex-end",
-    padding: "1.5rem 2rem",
+    padding: "1rem 2rem 0 0",
   },
   customContainedPrimary: {
     backgroundColor: "#5cb85c",
@@ -137,7 +136,6 @@ const mapDispatchToProps = {
   createPlaylist: createPlaylist,
   addMusicToPlaylist: addMusicToPlaylist,
   getPlaylists: getAllPlaylists,
-  getCurrentPlaylist: loadCurrentPlaylist,
   clearAlert: clearAlertAdmin,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Playlists);
