@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   clearAlertAdmin,
   createPlaylist,
@@ -6,7 +6,6 @@ import {
   getAllPlaylists,
 } from "./../../../redux/actions/adminActions";
 import { Container, makeStyles } from "@material-ui/core";
-import { useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Toolbar from "@material-ui/core/Toolbar";
 import { connect } from "react-redux";
@@ -16,8 +15,10 @@ import AddIcon from "@material-ui/icons/Add";
 import PlaylistCard from "./../../components/PlaylistCard";
 import Hidden from "@material-ui/core/Hidden";
 import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal"
+import CreatePlaylist from "./CreatePlaylist";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   progressIndicator: {
     position: "absolute",
     top: "50%",
@@ -41,7 +42,19 @@ const useStyles = makeStyles({
     right: "10%",
     bottom: "10%",
   },
-});
+  modalPaper: {
+  margin: "3rem auto 0 auto",
+  overflow: "scroll",
+    width: "80vw",
+    height: "80vh",
+    
+    backgroundColor: "white",
+    //backgroundColor: theme.palette.background.paper,
+    borderRadius: "10px",
+    
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
 
 function Playlists({
   clearAlert,
@@ -51,6 +64,7 @@ function Playlists({
   getPlaylists,
 }) {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     getPlaylists();
   }, []);
@@ -63,7 +77,17 @@ function Playlists({
       />
     );
   }
-  console.log(playlists);
+
+  
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <Toolbar />
@@ -72,6 +96,7 @@ function Playlists({
         <>
           <Hidden smUp>
             <Fab
+              onClick = {handleOpen}
               color="primary"
               aria-label="add"
               classes={{
@@ -91,6 +116,7 @@ function Playlists({
                     color="primary"
                     variant="contained"
                     startIcon={<AddIcon />}
+                    onClick = {handleOpen}
                     classes={{
                       containedPrimary: classes.customContainedPrimary,
                     }}
@@ -117,6 +143,17 @@ function Playlists({
           </Grid>
         </>
       )}
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={classes.modalPaper}>
+          <CreatePlaylist />
+        </div>
+      </Modal>
     </>
   );
 }
