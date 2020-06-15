@@ -21,7 +21,8 @@ import {
     YOUTUBE_MUSIC,
     SPOTIFY,
     AMAZON_MUSIC,
-    APPLE_MUSIC
+    APPLE_MUSIC,
+    AUDIOMACK
 } from "../../utils/constants"
 
 const useStyles = makeStyles({
@@ -71,7 +72,9 @@ function mapStreamingServiceToImage(link){
         case SPOTIFY:
             return "/assets/spotify.svg"
         case DEEZER:
-            return "/assets/deexer.svg"
+            return "/assets/deezer.svg"
+        case AUDIOMACK:
+          return "/assets/mark-orange.png"
     }
 }
 
@@ -130,7 +133,7 @@ function PlaylistDetails({
                       {song.name}
                     </Typography>
                     <Typography variant="body2" className = {classes.artistes}>
-                      {song.artistes.join(", ")}
+                      {song.artistes}
                     </Typography>
                     <Typography variant="body2">
                       {song.note}

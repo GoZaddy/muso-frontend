@@ -58,7 +58,7 @@ function CreatePlaylist({ createPlaylist }) {
               name: "",
               artistes: [],
               note: "",
-              links: [
+              song_links: [
                 {
                   streaming_service: "",
                   link: "",
@@ -67,8 +67,15 @@ function CreatePlaylist({ createPlaylist }) {
             },
           ],
         }}
+
+        onSubmit = {
+          (values) => {
+            createPlaylist(values)
+            console.log(values)
+          }
+        } 
         render={(formik) => (
-          <form onSubmit={formik.handleSubmit} ref={formRef}>
+          <Form>
             <TextField
               label="Name of Playlist"
               id="standard-basic"
@@ -99,7 +106,7 @@ function CreatePlaylist({ createPlaylist }) {
                           name: "",
                           artistes: [],
                           note: "",
-                          links: [
+                          song_links: [
                             {
                               streaming_service: "",
                               link: "",
@@ -114,7 +121,8 @@ function CreatePlaylist({ createPlaylist }) {
                 )}
               />
             }
-          </form>
+            <Button type = "submit">Submit</Button>
+          </Form>
         )}
       />
     </div>
