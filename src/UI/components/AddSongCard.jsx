@@ -55,9 +55,10 @@ const useStyles = makeStyles({
     marginTop: "0.8rem",
     borderRadius: "10px",
   },
+
 });
 
-function AddSongCard({ formik, idx, song }) {
+function AddSongCard({ formik, idx, song, songArrayHelpers }) {
   const classes = useStyles();
   return (
     <div className={classes.cardContainer}>
@@ -79,18 +80,7 @@ function AddSongCard({ formik, idx, song }) {
         onChange={formik.handleChange}
         value={formik.values.songs[idx].artistes}
       />
-      <Typography variant="h6" className={classes.subTitle}>
-        Additional notes:
-      </Typography>
-      <TextareaAutosize
-        aria-label="Additional Notes"
-        name={`songs[${idx}].note`}
-        rowsMin={3}
-        className={classes.notes}
-        value={formik.values.songs[idx].note}
-        onChange={formik.handleChange}
-        placeholder="Empty"
-      />
+      
       <div>
         <Typography variant="h6" align="left" className={classes.subTitle}>
           Song Links:
@@ -131,6 +121,11 @@ function AddSongCard({ formik, idx, song }) {
                   </div>
                 );
               })}
+              <div style = {{
+                display: "flex",
+                margin: "1rem 0",
+                justifyContent: "space-between"
+              }}>
               <Button color="primary" onClick = {() => {
                 arrayhelpers.push({
                   streaming_service: "",
@@ -139,6 +134,13 @@ function AddSongCard({ formik, idx, song }) {
               }}>
                 Add link
               </Button>
+              <Button color="secondary" onClick = {() => {
+                songArrayHelpers.remove(idx)
+              }}>
+                Delete song
+              </Button>
+              </div>
+              
             </>
           )}
         />

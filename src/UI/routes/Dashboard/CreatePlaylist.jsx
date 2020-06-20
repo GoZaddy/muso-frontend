@@ -92,7 +92,7 @@ function CreatePlaylist({ createPlaylist }) {
                   <div className = {classes.addSongsContainer}>
                   {formik.values.songs.map((song, idx) => {
                       return (
-                        <AddSongCard formik = {formik} idx = {idx} />
+                        <AddSongCard formik = {formik} idx = {idx} songArrayHelpers = {arrayhelpers} />
                       );
                     })}
                   </div>
