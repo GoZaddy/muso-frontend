@@ -22,8 +22,9 @@ const initialState = {
   playlistsLoading: false,
   playlistsLoaded: false,
   alert: null,
-  addMusicLoading: true,
-  createPlaylistLoading: true,
+  addMusicLoading: false,
+  createPlaylistLoading: false,
+ 
 };
 
 export default (state = initialState, action) => {

@@ -92,6 +92,8 @@ function AddSongToPlaylist({playlist,addSongToPlaylist}) {
 
 const mapStateToProps = (state) => ({
   adminAlert: state.admin.alert,
+  addSongLoading: state.admin.addMusicLoading,
+  
 });
 
 const mapDispatchToProps = {
