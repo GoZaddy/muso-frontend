@@ -25,6 +25,7 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { Switch } from "react-router-dom";
+import Alert from "./../../components/Alert";
 import DashboardItem from "./../../components/DashboardItem";
 import PlaylistDetails from "../PlaylistDetails";
 const drawerWidth = 240;
@@ -60,7 +61,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = ({ isAdminAuthenticated, logOut }) => {
+const Dashboard = ({
+  isAdminAuthenticated,
+  logOut,
+  adminAlert,
+  visitorAlert,
+}) => {
   const history = useHistory();
 
   const classes = useStyles();
@@ -197,6 +203,25 @@ const Dashboard = ({ isAdminAuthenticated, logOut }) => {
           <Route path={`/dashboard/users`} component={Users} />
           <Route path={`/`} component={Playlists} />
         </Switch>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "80%",
+            maxWidth: "400px",
+            position: "absolute",
+            zIndex: "4000",
+            bottom: "4rem",
+            marginLeft: "1rem",
+          }}
+        >
+          {adminAlert.map((alert) => (
+            <Alert alert={alert} />
+          ))}
+          {visitorAlert.map((alert) => (
+            <Alert alert={alert} />
+          ))}
+        </div>
       </main>
     </div>
   );

@@ -1,6 +1,9 @@
 import callAxios from "../../utils/callAxios";
 import { ADMIN_LOGIN_SUCCESS, ADMIN_LOGIN_FAILURE, ADMIN_AUTH_LOADING, LOGOUT_ADMIN, CLEAR_ALERT } from "../types/types";
 import setAuthToken from "../../utils/setAuthToken";
+import {v4} from "uuid";
+import {ALERT_TIMEOUT} from "../../utils/constants";
+
 
 
 
@@ -47,13 +50,16 @@ export const loginAdmin = function(adminDetails){
         dispatch({
             type: ADMIN_AUTH_LOADING
         })
+        const id = v4()
         try{
             const response = await callAxios("POST", "/authenticate", adminDetails)
             console.log("login success")
+            
             dispatch({
                 type: ADMIN_LOGIN_SUCCESS,
                 payload: response.data.token,
                 alert: {
+                    id: id,                    
                     type: "success",
                     message: "Log in successful!"
                 }
@@ -65,18 +71,22 @@ export const loginAdmin = function(adminDetails){
                 type: ADMIN_LOGIN_FAILURE,
                 payload: err.response.status,
                 alert:{
+                    id: id,                    
                     type: "error",
                     message: err.response.data
                 }
             })
         }
+        finally{
+            setTimeout(() => {
+                dispatch({
+                    type: CLEAR_ALERT,
+                    id: id
+                })
+            }, ALERT_TIMEOUT)
+            
+        }
         
-    }
-}
-
-export const clearAlertAuth  =  function(){
-    return {
-        type: CLEAR_ALERT
     }
 }
 

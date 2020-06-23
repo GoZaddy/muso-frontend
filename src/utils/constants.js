@@ -15,3 +15,6 @@ export const DEEZER = "DEEZER"
 
 //AmazonMusic constant string
 export const AMAZON_MUSIC = "AMAZON_MUSIC"
+
+//Time before alert clears
+export const ALERT_TIMEOUT = 2000

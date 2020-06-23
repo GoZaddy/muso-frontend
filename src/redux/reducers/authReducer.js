@@ -16,7 +16,7 @@ const initialState = {
   isAdminAuthenticated: localStorage.getItem("musoAdminAuthToken") ? true : false,
   adminDetails: null,
   redirectToLogin: false,
-  alert: null,
+  alert: [],
 };
 
 export default (state = initialState, action) => {
@@ -31,7 +31,7 @@ export default (state = initialState, action) => {
         ...state,
         isAdminAuthenticated: false,
         adminDetails: null,
-        alert: null,
+        alert: [],
       };
     
       case ADMIN_AUTH_LOADING: 
@@ -44,7 +44,8 @@ export default (state = initialState, action) => {
         return {
           ...state,
           loginLoading: false,
-          isAdminAuthenticated: true
+          isAdminAuthenticated: true,
+          alert: [...state.alert, action.alert]
         }
     case AUTH_ERROR:
       localStorage.removeItem("musoAdminAuthToken");
@@ -53,23 +54,23 @@ export default (state = initialState, action) => {
         isAdminAuthenticated: false,
         
         adminDetails: null,
-        alert: {
+        alert: [...state.alert,{
           type: "error",
           message:
             "Admin details could not be retrieved! You will be logged out soon",
-        },
+        }],
       };
     case ADMIN_LOGIN_FAILURE: 
         localStorage.removeItem("musoAdminAuthToken");
         return {
             ...state,
             loginLoading: false,
-            alert: action.alert
+            alert: [...state.alert,action.alert]
         }
     case CLEAR_ALERT:
       return {
         ...state,
-        alert: null
+        alert: state.alert.filter(alert => alert.id != action.id)
       }
     /*case ADMIN_DETAILS_LOADING:
       return {

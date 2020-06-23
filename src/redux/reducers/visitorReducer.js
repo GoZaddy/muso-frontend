@@ -17,7 +17,7 @@ const initialState = {
   recentPlaylistsLoaded: false,
   olderPlaylists: null,
   recentPlaylists: null,
-  alert: null,
+  alert: [],
   isSubscribeButtonClicked: false,
 };
 
@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
     case CLEAR_ALERT:
       return {
         ...state,
-        alert: null,
+        alert: state.alert.filter(alert => alert.id != action.id),
       };
     case RECENT_PLAYLISTS_LOADING:
       return {
@@ -47,7 +47,7 @@ export default (state = initialState, action) => {
         recentPlaylists: null,
         recentPlaylistsLoading: false,
         recentPlaylistsLoaded: false,
-        alert: action.alert,
+        alert: [...state.alert,action.alert],
       };
 
     case OLDER_PLAYLISTS_LOADING:
@@ -69,7 +69,7 @@ export default (state = initialState, action) => {
         olderPlaylists: null,
         olderPlaylistsLoading: false,
         olderPlaylistsLoaded: false,
-        alert: action.alert,
+        alert: [...state.alert,action.alert],
       };
     case SUBSCRIBE_MODAL_OPENED:
       return {

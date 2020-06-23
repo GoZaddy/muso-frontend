@@ -1,5 +1,8 @@
 import callAxios from "../../utils/callAxios";
 import setAuthToken from "../../utils/setAuthToken";
+import {v4} from "uuid";
+import {ALERT_TIMEOUT} from "../../utils/constants";
+
 
 import {
   CREATE_PLAYLIST_FAILURE,
@@ -26,11 +29,13 @@ export const createPlaylist = function (playlist) {
     if (localStorage.getItem("musoAdminAuthToken")) {
       setAuthToken(localStorage.getItem("musoAdminAuthToken"));
     }
+    const id = v4();
     try {
       const response = await callAxios("POST", "/playlists", playlist);
       dispatch({
         type: CREATE_PLAYLIST_SUCCESS,
         alert: {
+          id,
           type: "success",
           message: "Playlist created successfully!",
         },
@@ -40,11 +45,21 @@ export const createPlaylist = function (playlist) {
         type: CREATE_PLAYLIST_FAILURE,
         payload: err.response.status,
         alert: {
+          id,
           type: "error",
           message: "Could not create playlist",
         },
       });
     }
+    finally{
+      setTimeout(() => {
+          dispatch({
+              type: CLEAR_ALERT,
+              id: id
+          })
+      }, ALERT_TIMEOUT)
+      
+  }
   };
 };
 
@@ -57,26 +72,37 @@ export const addMusicToPlaylist = function (id, music) {
     if (localStorage.getItem("musoAdminAuthToken")) {
       setAuthToken(localStorage.getItem("musoAdminAuthToken"));
     }
-
+    const alertID = v4();
     try {
       await callAxios("POST", `/playlists/${id}/songs`, music);
       dispatch({
         type: ADD_MUSIC_SUCCESS,
         alert: {
+          id: alertID,
           type: "success",
           message: "Song added successfully!",
         },
       });
     } catch (err) {
+      console.log(err.response)
       dispatch({
         type: ADD_MUSIC_FAILURE,
-        payload: err.response.status,
         alert: {
+          id: alertID,
           type: "error",
-          message: "Could not add song",
+          message: "Could not add song: " + err.message,
         },
       });
     }
+    finally{
+      setTimeout(() => {
+          dispatch({
+              type: CLEAR_ALERT,
+              id: alertID
+          })
+      }, ALERT_TIMEOUT)
+      
+  }
   };
 };
 
@@ -98,15 +124,24 @@ export const getAllUsers = function () {
         payload: response.data,
       });
     } catch (err) {
+      const id = v4();
       console.log(err.response);
       dispatch({
         type: GET_USERS_FAILURE,
         alert: {
+          id,
           type: "error",
           message: err.message,
         },
       });
+      setTimeout(() => {
+        dispatch({
+            type: CLEAR_ALERT,
+            id: id
+        })
+    }, ALERT_TIMEOUT)
     }
+    
   };
 };
 
@@ -135,16 +170,24 @@ export const getAllPlaylists = function(){
       })
     }
     catch(err){
+      const id = v4();
       console.log(err.message)
       dispatch({
         type: PLAYLISTS_LOAD_ERROR,
         alert: {
+          id,
           type: "error",
           message: err.message
         }
-      })
+      });
+      setTimeout(() => {
+        dispatch({
+            type: CLEAR_ALERT,
+            id: id
+        })
+    }, ALERT_TIMEOUT)
     }
-
+   
   }
 }
 //View all users

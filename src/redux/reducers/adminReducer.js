@@ -13,6 +13,7 @@ import {
   PLAYLISTS_LOADED,
   PLAYLISTS_LOADING,
 } from "../types/types";
+import uuid from "uuid";
 
 const initialState = {
   usersLoading: false,
@@ -21,7 +22,7 @@ const initialState = {
   playlists: null,
   playlistsLoading: false,
   playlistsLoaded: false,
-  alert: null,
+  alert: [],
   addMusicLoading: false,
   createPlaylistLoading: false,
  
@@ -33,14 +34,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         usersLoading: false,
-        alert: action.alert,
+        alert: [...state.alert,action.alert],
       };
     case CREATE_PLAYLIST_FAILURE:
     case ADD_MUSIC_FAILURE:
+      console.log(action)
       return {
         ...state,
-
-        alert: action.alert,
+        alert: [...state.alert,action.alert],
       };
     case GET_USERS_LOADING:
       return {
@@ -51,7 +52,7 @@ export default (state = initialState, action) => {
     case CLEAR_ALERT:
       return {
         ...state,
-        alert: null,
+        alert: state.alert.filter(alert => alert.id != action.id),
       };
 
     case GET_USERS_SUCCESS:
@@ -64,9 +65,10 @@ export default (state = initialState, action) => {
 
     case ADD_MUSIC_SUCCESS:
     case CREATE_PLAYLIST_SUCCESS:
+      console.log(action)
       return {
         ...state,
-        alert: action.alert,
+        alert: [...state.alert,action.alert], //error here
       };
     case ADD_MUSIC_LOADING:
       return {

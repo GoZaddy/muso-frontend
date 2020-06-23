@@ -6,10 +6,11 @@ import Button from "@material-ui/core/Button";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { makeStyles } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { loginAdmin, clearAlertAuth } from "../../redux/actions/authAction";
+import { loginAdmin } from "../../redux/actions/authAction";
 import { connect } from "react-redux";
-import Alert from "@material-ui/lab/Alert"
-import AlertTitle from "@material-ui/lab/AlertTitle"
+//import Alert from "@material-ui/lab/Alert"
+//import AlertTitle from "@material-ui/lab/AlertTitle"
+import Alert from "./../components/Alert";
 import { useEffect } from "react";
 import Grow from '@material-ui/core/Grow';
 import { useHistory } from "react-router-dom";
@@ -23,6 +24,9 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, aler
     }
   }, [isAdminAuthenticated])
   useEffect(() => {
+    console.log(alert)
+  }, [alert])
+  /*useEffect(() => {
     console.log("heyy")
     if(alert && alert.type !== ""){
       console.log(alert);
@@ -44,7 +48,7 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, aler
       })
       
     }
-  }, [alert]);
+  }, [alert]);*/
   const useStyles = makeStyles({
     heading: {
       fontSize: "2rem",
@@ -157,12 +161,10 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, aler
         </div>
       </form>
     </Container>
-  <Grow timeout = {100} in = {isAlertOpen}>
-    <Alert severity={currentAlert.type} className = {classes.alert}>
-          <AlertTitle className = {classes.alertTitle}>{currentAlert.type}</AlertTitle>
-            {currentAlert.message}
-    </Alert>
-    </Grow>
+    {
+      alert.map(alert => <Alert alert = {alert} />)
+    }
+  
     </>
   );
 }
@@ -175,7 +177,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   login: loginAdmin,
-  clearAlert: clearAlertAuth
+ 
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
