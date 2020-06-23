@@ -135,11 +135,12 @@ export const getAllPlaylists = function(){
       })
     }
     catch(err){
+      console.log(err.message)
       dispatch({
         type: PLAYLISTS_LOAD_ERROR,
         alert: {
           type: "error",
-          message: err.response.data
+          message: err.message
         }
       })
     }

@@ -8,6 +8,7 @@ import {
   ADMIN_AUTH_LOADING,
   CLEAR_ALERT
 } from "../types/types";
+import setAuthToken from "../../utils/setAuthToken";
 
 const initialState = {
   loginLoading: false,
@@ -22,6 +23,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case LOGOUT_ADMIN:
       localStorage.removeItem("musoAdminAuthToken");
+      setAuthToken();
       setTimeout(() => {
         window.location.reload();
       }, 300);

@@ -1,31 +1,33 @@
-import React from "react";
+import React, {useState} from "react";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import AddSongToPlaylist from "./Dashboard/AddSongToPlaylist"
 import {
   Toolbar,
   Container,
   Typography,
   List,
   ListItem,
-  ListItemText,
   makeStyles,
   Card,
   CardActionArea,
   CardActions,
   CardContent,
   Link,
-  Avatar
+  Avatar,
+  Button,
+  Modal,
 } from "@material-ui/core";
 
 import {
-    DEEZER,
-    YOUTUBE_MUSIC,
-    SPOTIFY,
-    AMAZON_MUSIC,
-    APPLE_MUSIC,
-    AUDIOMACK
-} from "../../utils/constants"
+  DEEZER,
+  YOUTUBE_MUSIC,
+  SPOTIFY,
+  AMAZON_MUSIC,
+  APPLE_MUSIC,
+  AUDIOMACK,
+} from "../../utils/constants";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   red: {
     color: "red",
   },
@@ -41,41 +43,62 @@ const useStyles = makeStyles({
   },
   artistes: {
     fontWeight: 500,
-    marginBottom: "1rem"
+    marginBottom: "1rem",
   },
   listContainer: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent:"center",
-      alignContent: "center",
-      alignItems: "center"
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
   },
   cardContainer: {
     width: "80%",
     margin: "auto",
-    maxWidth: "600px"
+    maxWidth: "600px",
   },
   card: {
-   width: "100%"
+    width: "100%",
+  },
+  customContainedPrimary: {
+    backgroundColor: "#5cb85c",
+    color: "#ffffff",
+    "&:hover": {
+      backgroundColor: "#5cb85c",
+    },
+  },
+  fab: {
+    position: "fixed",
+    zIndex: 1200,
+    right: "10%",
+    bottom: "10%",
+  },
+  modalPaper: {
+    margin: "3rem auto 0 auto",
+    overflow: "scroll",
+    width: "80vw",
+    height: "80vh",
+    backgroundColor: "white",
+    borderRadius: "10px",
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
+function mapStreamingServiceToImage(link) {
+  switch (link) {
+    case YOUTUBE_MUSIC:
+      return "/assets/youtube.svg";
+    case APPLE_MUSIC:
+      return "/assets/itunes.svg";
+    case AMAZON_MUSIC:
+      return "/assets/amazon.svg";
+    case SPOTIFY:
+      return "/assets/spotify.svg";
+    case DEEZER:
+      return "/assets/deezer.svg";
+    case AUDIOMACK:
+      return "/assets/mark-orange.png";
   }
-});
-
-
-function mapStreamingServiceToImage(link){
-    switch(link){
-        case YOUTUBE_MUSIC:
-            return "/assets/youtube.svg"
-        case APPLE_MUSIC:
-            return "/assets/itunes.svg"
-        case AMAZON_MUSIC:
-            return "/assets/amazon.svg"
-        case SPOTIFY:
-            return "/assets/spotify.svg"
-        case DEEZER:
-            return "/assets/deezer.svg"
-        case AUDIOMACK:
-          return "/assets/mark-orange.png"
-    }
 }
 
 function PlaylistDetails({
@@ -85,10 +108,33 @@ function PlaylistDetails({
 }) {
   console.log(playlist);
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <Toolbar />
       <Container className={classes.container}>
+        <div>
+          <Button
+            variant="contained"
+            color = "primary"
+            onClick = {
+             handleOpen
+            }
+            classes={{
+              containedPrimary: classes.customContainedPrimary,
+            }}
+          >
+            Add Song
+          </Button>
+        </div>
         <div>
           <Typography variant="h1" align="center" className={classes.title}>
             {playlist.name}
@@ -120,54 +166,55 @@ function PlaylistDetails({
             >{`${playlist.likes} likes`}</Typography>
           </div>
         </div>
-        <div className= {classes.listContainer}>
-        <List style = {{
-            width:"100%"
-        }}>
-          {playlist.songs.map((song) => (
-            <ListItem className = {classes.cardContainer}>
-              <Card className = {classes.card}>
-                <CardActionArea>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5">
-                      {song.name}
-                    </Typography>
-                    <Typography variant="body2" className = {classes.artistes}>
-                      {song.artistes}
-                    </Typography>
-                    <Typography variant="body2">
-                      {song.note}
-                    </Typography>
-
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  {song.song_links.map((link) => (
+        <div className={classes.listContainer}>
+          <List
+            style={{
+              width: "100%",
+            }}
+          >
+            {playlist.songs.map((song) => (
+              <ListItem className={classes.cardContainer}>
+                <Card className={classes.card}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5">
+                        {song.name}
+                      </Typography>
+                      <Typography variant="body2" className={classes.artistes}>
+                        {song.artistes}
+                      </Typography>
+                      <Typography variant="body2">{song.note}</Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    {song.song_links.map((link) => (
                       <Link href={link.link}>
-                         <Avatar src = {mapStreamingServiceToImage(link.streaming_service)} />
+                        <Avatar
+                          src={mapStreamingServiceToImage(
+                            link.streaming_service
+                          )}
+                        />
                       </Link>
-                      
-                  ))}
-                </CardActions>
-              </Card>
-            </ListItem>
-          ))}
-        </List>
+                    ))}
+                  </CardActions>
+                </Card>
+              </ListItem>
+            ))}
+          </List>
         </div>
-        
       </Container>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={classes.modalPaper}>
+          <AddSongToPlaylist playlist = {playlist}/>
+        </div>
+      </Modal>
     </>
   );
 }
 
 export default PlaylistDetails;
-
-/**
- * 
- * <ListItemText>{song.name}</ListItemText>
-              <ListItemText>{song.artistes.join(", ")}</ListItemText>
-              <ListItemText>{song.note}</ListItemText>
-              {song.song_links.map((link) => (
-                <a href={link.link}>{link.streaming_service}</a>
-              ))}
- */

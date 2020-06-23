@@ -15,7 +15,7 @@ import AddIcon from "@material-ui/icons/Add";
 import PlaylistCard from "./../../components/PlaylistCard";
 import Hidden from "@material-ui/core/Hidden";
 import Button from "@material-ui/core/Button";
-import Modal from "@material-ui/core/Modal"
+import Modal from "@material-ui/core/Modal";
 import CreatePlaylist from "./CreatePlaylist";
 
 const useStyles = makeStyles((theme) => ({
@@ -43,15 +43,12 @@ const useStyles = makeStyles((theme) => ({
     bottom: "10%",
   },
   modalPaper: {
-  margin: "3rem auto 0 auto",
-  overflow: "scroll",
+    margin: "3rem auto 0 auto",
+    overflow: "scroll",
     width: "80vw",
     height: "80vh",
-    
     backgroundColor: "white",
-    //backgroundColor: theme.palette.background.paper,
     borderRadius: "10px",
-    
     padding: theme.spacing(2, 4, 3),
   },
 }));
@@ -78,8 +75,6 @@ function Playlists({
     );
   }
 
-  
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -96,7 +91,7 @@ function Playlists({
         <>
           <Hidden smUp>
             <Fab
-              onClick = {handleOpen}
+              onClick={handleOpen}
               color="primary"
               aria-label="add"
               classes={{
@@ -116,7 +111,7 @@ function Playlists({
                     color="primary"
                     variant="contained"
                     startIcon={<AddIcon />}
-                    onClick = {handleOpen}
+                    onClick={handleOpen}
                     classes={{
                       containedPrimary: classes.customContainedPrimary,
                     }}

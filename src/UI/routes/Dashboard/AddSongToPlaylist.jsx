@@ -1,57 +1,26 @@
 import React from "react";
 import { connect } from "react-redux";
-import { useFormik, Form, FieldArray, Formik } from "formik";
-
-import {
-  clearAlertAdmin,
-  createPlaylist,
-} from "./../../../redux/actions/adminActions";
-import {
-  Typography,
-  makeStyles,
-  TextField,
-  Button,
-  Select,
-  TextareaAutosize,
-  MenuItem,
-} from "@material-ui/core";
-import { createRef } from "react";
-
+import { addMusicToPlaylist } from "../../../redux/actions/adminActions";
+import {Formik, Form, FieldArray} from "formik"
 import AddSongCard from "../../components/AddSongCard";
+import {Container, Typography, makeStyles, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: "1rem",
-  },
   title: {
     fontSize: "1.5rem",
-  },
-  subTitle: {
-    fontSize: "1rem",
-  },
-  addSongsContainer:{
-      display: "flex",
-      justifyContent: "center",
-      flexDirection: "column",
-    [theme.breakpoints.up("sm")]: {
-        flexDirection: "row",
-        
-        flexWrap: "wrap"
-      },
+    margin: "1rem 0"
   }
 }));
-
-function CreatePlaylist({ createPlaylist }) {
+function AddSongToPlaylist({playlist,addSongToPlaylist}) {
   const classes = useStyles();
+  
 
   return (
-    <div className={classes.root}>
-      <Typography variant="h2" className={classes.title} align="center">
-        Create a new playlist
-      </Typography>
+    <Container>
+      <Typography variant = "h3" align = "center" className = {classes.title}>Add new songs to this playlist</Typography>
+      <Container>
       <Formik
         initialValues={{
-          name: "",
           songs: [
             {
               name: "",
@@ -69,20 +38,12 @@ function CreatePlaylist({ createPlaylist }) {
 
         onSubmit = {
           (values) => {
-            createPlaylist(values)
             console.log(values)
+            addSongToPlaylist(playlist.id, values)
           }
         } 
         render={(formik) => (
           <Form>
-            <TextField
-              label="Name of Playlist"
-              id="standard-basic"
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-            />
             {
               <FieldArray
                 name="songs"
@@ -124,8 +85,9 @@ function CreatePlaylist({ createPlaylist }) {
           </Form>
         )}
       />
-    </div>
-  );
+      </Container>
+    </Container>
+  )
 }
 
 const mapStateToProps = (state) => ({
@@ -133,8 +95,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  createPlaylist: createPlaylist,
-  clearAlert: clearAlertAdmin,
+  addSongToPlaylist: addMusicToPlaylist,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatePlaylist);
+export default connect(mapStateToProps, mapDispatchToProps)(AddSongToPlaylist);
