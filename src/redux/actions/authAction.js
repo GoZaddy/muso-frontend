@@ -57,7 +57,7 @@ export const loginAdmin = function(adminDetails){
             
             dispatch({
                 type: ADMIN_LOGIN_SUCCESS,
-                payload: response.data.token,
+                payload: response.data["access_token"],
                 alert: {
                     id: id,                    
                     type: "success",

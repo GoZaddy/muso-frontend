@@ -31,7 +31,7 @@ export const createPlaylist = function (playlist) {
     }
     const id = v4();
     try {
-      const response = await callAxios("POST", "/playlists", playlist);
+      await callAxios("POST", "/playlists", playlist);
       dispatch({
         type: CREATE_PLAYLIST_SUCCESS,
         alert: {
@@ -47,7 +47,7 @@ export const createPlaylist = function (playlist) {
         alert: {
           id,
           type: "error",
-          message: "Could not create playlist",
+          message: "Could not create playlist: " + err.response.data,
         },
       });
     }
@@ -90,7 +90,7 @@ export const addMusicToPlaylist = function (id, music) {
         alert: {
           id: alertID,
           type: "error",
-          message: "Could not add song: " + err.message,
+          message: "Could not add song: " + err.response.data,
         },
       });
     }

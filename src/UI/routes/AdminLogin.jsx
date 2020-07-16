@@ -26,29 +26,7 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, aler
   useEffect(() => {
     console.log(alert)
   }, [alert])
-  /*useEffect(() => {
-    console.log("heyy")
-    if(alert && alert.type !== ""){
-      console.log(alert);
-      showAlert(alert)
-      setIsAlertOpen(true)
-      setTimeout(
-        () => {
-          clearAlert()
-          setIsAlertOpen(false)
-        }, 2000
-      )
-
-
-    }
-    return () => {
-      showAlert({
-        type: "",
-        message: ""
-      })
-      
-    }
-  }, [alert]);*/
+  
   const useStyles = makeStyles({
     heading: {
       fontSize: "2rem",
@@ -94,12 +72,6 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, aler
     password: "",
   });
 
-  const [currentAlert, showAlert] = useState({
-    type: "",
-    message:""
-  })
-
-  const [isAlertOpen, setIsAlertOpen] = useState(false)
 
   function handleChange(e) {
     setCredentials({
@@ -162,7 +134,7 @@ function Login({ isLoginLoading, isAdminAuthenticated, login, adminDetails, aler
       </form>
     </Container>
     {
-      alert.map(alert => <Alert alert = {alert} />)
+      alert.map(alert => <Alert alert = {alert} variant = "single" />)
     }
   
     </>
