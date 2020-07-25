@@ -53,11 +53,11 @@ export const loginAdmin = function(adminDetails){
         const id = v4()
         try{
             const response = await callAxios("POST", "/authenticate", adminDetails)
-            console.log("login success")
+            console.log(response)
             
             dispatch({
                 type: ADMIN_LOGIN_SUCCESS,
-                payload: response.data["access_token"],
+                payload: response.data,
                 alert: {
                     id: id,                    
                     type: "success",
@@ -66,7 +66,7 @@ export const loginAdmin = function(adminDetails){
             })
         }
         catch(err){
-            console.log(err.response)
+            console.log("error message:" +err.message);
             dispatch({
                 type: ADMIN_LOGIN_FAILURE,
                 payload: err.response.status,

@@ -12,6 +12,9 @@ import {
   PLAYLISTS_LOAD_ERROR,
   PLAYLISTS_LOADED,
   PLAYLISTS_LOADING,
+  DELETE_PLAYLIST_SUCCESS,
+  DELETE_PLAYLIST_LOADING,
+  DELETE_PLAYLIST_FAILURE,
 } from "../types/types";
 import uuid from "uuid";
 
@@ -25,6 +28,10 @@ const initialState = {
   alert: [],
   addMusicLoading: false,
   createPlaylistLoading: false,
+  deletePlaylistLoading: {
+    isLoading: false,
+    id: null
+  }
  
 };
 
@@ -38,6 +45,7 @@ export default (state = initialState, action) => {
       };
     case CREATE_PLAYLIST_FAILURE:
     case ADD_MUSIC_FAILURE:
+    
       console.log(action)
       return {
         ...state,
@@ -62,9 +70,23 @@ export default (state = initialState, action) => {
         usersLoading: false,
         usersLoaded: true,
       };
+    
+    case DELETE_PLAYLIST_FAILURE:
+    case DELETE_PLAYLIST_SUCCESS:
+      
+      return {
+        ...state,
+        deletePlaylistLoading: {
+          isLoading: false,
+          id: null
+        },
+        alert: [...state.alert,action.alert]
+      }
+      
 
     case ADD_MUSIC_SUCCESS:
     case CREATE_PLAYLIST_SUCCESS:
+    
       console.log(action)
       return {
         ...state,
@@ -80,6 +102,15 @@ export default (state = initialState, action) => {
         ...state,
         createPlaylistLoading: true,
       };
+    case DELETE_PLAYLIST_LOADING:
+      return {
+        ...state,
+        deletePlaylistLoading: {
+          isLoading: true,
+          id: action.payload
+        }
+      }
+    
     case PLAYLISTS_LOADING:
       return {
         ...state,

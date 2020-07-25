@@ -8,7 +8,11 @@ const callAxios = async (method, url, data) => {
       return response;
 
     case "POST":
-      response = await instance.post(url, data);
+      response = await instance.post(url, data, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
       return response;
 
     case "GET":

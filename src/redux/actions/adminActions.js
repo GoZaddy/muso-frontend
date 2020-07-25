@@ -17,7 +17,10 @@ import {
   CLEAR_ALERT,
   PLAYLISTS_LOADING,
   PLAYLISTS_LOADED,
-  PLAYLISTS_LOAD_ERROR
+  PLAYLISTS_LOAD_ERROR,
+  DELETE_PLAYLIST_LOADING,
+  DELETE_PLAYLIST_FAILURE,
+  DELETE_PLAYLIST_SUCCESS
 } from "../types/types";
 
 
@@ -188,6 +191,52 @@ export const getAllPlaylists = function(){
     }, ALERT_TIMEOUT)
     }
    
+  }
+}
+
+
+export const deletePlaylist = function(id){
+  return async function(dispatch){
+    dispatch({
+      type: DELETE_PLAYLIST_LOADING
+    });
+
+    if (localStorage.getItem("musoAdminAuthToken")){
+      setAuthToken(localStorage.getItem("musoAdminAuthToken"));
+    }
+
+    const alertID = v4();
+    try{
+      await callAxios("DELETE", `/playlists/${id}`);
+      dispatch({
+        type: DELETE_PLAYLIST_SUCCESS,
+        payload: id,
+        alert: {
+          id: alertID,
+          type:"success",
+          message: "Song deleted successfully"
+        }
+      })
+    } catch (err){
+      console.log(err.response)
+      dispatch({
+        type: DELETE_PLAYLIST_FAILURE,
+        alert: {
+          id: alertID,
+          type: "error",
+          message: "Could not delete playlist: " + err.response.data,
+        },
+      });
+    }
+    finally {
+      setTimeout(() => {
+        dispatch({
+          type: CLEAR_ALERT,
+          id: alertID
+        })
+      }, ALERT_TIMEOUT);
+      window.location.reload();
+    }
   }
 }
 //View all users

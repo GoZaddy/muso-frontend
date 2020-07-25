@@ -23,6 +23,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case LOGOUT_ADMIN:
       localStorage.removeItem("musoAdminAuthToken");
+      localStorage.removeItem("musoAdminAuthRefreshToken");
       setAuthToken();
       setTimeout(() => {
         window.location.reload();
@@ -40,7 +41,8 @@ export default (state = initialState, action) => {
           loginLoading: true
         }
       case ADMIN_LOGIN_SUCCESS:
-        localStorage.setItem("musoAdminAuthToken", action.payload)
+        localStorage.setItem("musoAdminAuthToken", action.payload["access_token"])
+        localStorage.setItem("musoAdminAuthRefreshToken", action.payload["refresh_token"])
         return {
           ...state,
           loginLoading: false,
